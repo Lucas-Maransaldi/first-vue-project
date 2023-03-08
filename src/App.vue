@@ -1,34 +1,40 @@
 <template>
-  <main class="columns is-gapless is-multiline " :class="{ 'modo-escuro': isDarkMode}">
+  <main
+    class="columns is-gapless is-multiline"
+    :class="{ 'modo-escuro': isDarkMode }"
+  >
     <div class="column is-one-quarter">
-      <BarraLateral @toggle-theme="_changeTheme"/>
+      <BarraLateral @toggle-theme="_changeTheme" />
     </div>
     <div class="column is-three-quarter conteudo">
+      <Notificacoes />
       <router-view></router-view>
     </div>
   </main>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import BarraLateral from './components/BarraLateral.vue';
+  import { defineComponent } from 'vue';
+  import BarraLateral from './components/BarraLateral.vue';
+  import Notificacoes from './components/Notificacoes.vue';
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    BarraLateral,
-},
-  data() {
-    return {
-      isDarkMode: false
-    }
-  },
-  methods: {
-    _changeTheme(isDarkMode: boolean): void {
-      this.isDarkMode = isDarkMode;
-    }
-  }
-});
+  export default defineComponent({
+    name: 'App',
+    components: {
+      BarraLateral,
+      Notificacoes,
+    },
+    data() {
+      return {
+        isDarkMode: false,
+      };
+    },
+    methods: {
+      _changeTheme(isDarkMode: boolean): void {
+        this.isDarkMode = isDarkMode;
+      },
+    },
+  });
 </script>
 
 <style>
