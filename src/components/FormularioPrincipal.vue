@@ -36,7 +36,7 @@
 <script lang="ts">
   import ITarefa from '@/interfaces/ITarefa';
   import { useStore } from '@/store';
-  import { defineComponent, computed } from 'vue';
+  import { computed, defineComponent } from 'vue';
   import Temporizador from './Temporizador.vue';
 
   export default defineComponent({
@@ -47,7 +47,7 @@
     data() {
       return {
         descricao: '',
-        idProjeto: '',
+        idProjeto: null,
       };
     },
     methods: {

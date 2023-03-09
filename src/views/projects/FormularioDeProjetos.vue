@@ -20,8 +20,9 @@
 <script lang="ts">
   import useNotificador from '@/hooks/notificador';
   import { TipoDeNotificacao } from '@/interfaces/INotificacao';
+  import IProjeto from '@/interfaces/IProjeto';
   import { useStore } from '@/store';
-  import { ADICIONA_PROJETO, ALTERA_PPROJETO } from '@/store/mutations';
+  import { ADD_PROJECT, CHANGE_PROJECT } from '@/store/actions';
   import { defineComponent } from 'vue';
 
   export default defineComponent({
@@ -34,7 +35,7 @@
     mounted() {
       if (this.id) {
         const projetoSelecionado = this.store.state.projetos.find(
-          (projeto) => projeto.id === this.id
+          (projeto) => projeto.id === Number(this.id)
         );
         this.nomeDoProjeto = projetoSelecionado?.nome || '';
       }
@@ -47,20 +48,35 @@
     methods: {
       salvar(): void {
         if (this.id) {
-          this.store.commit(ALTERA_PPROJETO, {
-            id: this.id,
-            nome: this.nomeDoProjeto,
-          });
+          this.store
+            .dispatch(CHANGE_PROJECT, {
+              id: this.id,
+              nome: this.nomeDoProjeto,
+            })
+            .then((project) => this._handlerSuccess(project))
+            .catch(() => this._handlerFail());
         } else {
-          this.store.commit(ADICIONA_PROJETO, this.nomeDoProjeto);
+          this.store
+            .dispatch(ADD_PROJECT, this.nomeDoProjeto)
+            .then((project) => this._handlerSuccess(project))
+            .catch(() => this._handlerFail());
         }
-        this.nomeDoProjeto = '';
+      },
+      _handlerSuccess(project: IProjeto): void {
         this.notificar(
-          'Exelente',
-          'O projeto foi criado com sucesso',
+          'Sucesso',
+          `Projeto ${project.nome} adicionado com sucesso`,
           TipoDeNotificacao.SUCESSO
         );
         this.$router.push('/projetos');
+        this.nomeDoProjeto = '';
+      },
+      _handlerFail(): void {
+        this.notificar(
+          'Erro',
+          'Falha em adição de projetos',
+          TipoDeNotificacao.FALHA
+        );
       },
     },
     setup() {
