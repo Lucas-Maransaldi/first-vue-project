@@ -38,18 +38,18 @@
 </script>
 
 <style>
-  .lista {
-    padding: 1.25rem;
-  }
   main {
     --bg-primario: #fff;
     --texto-primario: #000;
   }
   main.modo-escuro {
-    --bg-primario: #2b2b2b;
+    --bg-primario: #2b2d42;
     --texto-primario: #ddd;
   }
+  .lista {
+    padding: 1.25rem;
+  }
   .conteudo {
-    background: var(--bg-primario);
+    background-color: var(--bg-primario);
   }
 </style>
