@@ -47,7 +47,4 @@
     padding: 8px;
     z-index: 105;
   }
-  .message {
-    animation: 300ms ease-in-out;
-  }
 </style>
