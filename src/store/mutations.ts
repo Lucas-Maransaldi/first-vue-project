@@ -4,3 +4,7 @@ export const EXCLUIR_PROJETO = 'EXCLUIR_PROJETO';
 export const SET_PROJETOS = 'SET_PROJETOS';
 
 export const NOTIFICAR = 'NOTIFICAR';
+
+export const SET_TAREFAS = "GET_TAREFAS";
+export const ADICIONA_TAREFA = 'ADICIONA_TAREFA';
+export const ALTERA_TAREFA = 'ALTERA_TAREFA';

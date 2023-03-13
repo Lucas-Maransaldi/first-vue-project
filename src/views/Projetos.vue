@@ -7,14 +7,14 @@
 
 <script lang="ts">
   import { useStore } from '@/store';
-  import { defineComponent, computed } from 'vue';
+  import { computed, defineComponent } from 'vue';
 
   export default defineComponent({
     name: 'Projetos',
     setup() {
       const store = useStore();
       return {
-        projects: computed(() => store.state.projetos),
+        projects: computed(() => store.state.projeto.projetos),
       };
     },
   });

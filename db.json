@@ -5,8 +5,23 @@
       "nome": "Alura tracker"
     },
     {
-      "nome": "as",
-      "id": 2
+      "id": 2,
+      "nome": "asaassa"
+    },
+    {
+      "nome": "aaaa",
+      "id": 3
+    }
+  ],
+  "tarefas": [
+    {
+      "id": 1,
+      "descricao": "Vue3s",
+      "tempoEmSegundos": 300,
+      "projeto": {
+        "id": 1,
+        "nome": "Alura tracker"
+      }
     }
   ]
 }

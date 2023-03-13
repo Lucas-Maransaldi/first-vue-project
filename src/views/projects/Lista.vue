@@ -48,7 +48,7 @@
       const store = useStore();
       store.dispatch(GET_PROJECT);
       return {
-        projects: computed(() => store.state.projetos),
+        projects: computed(() => store.state.projeto.projetos),
         store,
       };
     },

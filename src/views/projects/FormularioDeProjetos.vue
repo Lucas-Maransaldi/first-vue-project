@@ -20,7 +20,6 @@
 <script lang="ts">
   import useNotificador from '@/hooks/notificador';
   import { TipoDeNotificacao } from '@/interfaces/INotificacao';
-  import IProjeto from '@/interfaces/IProjeto';
   import { useStore } from '@/store';
   import { ADD_PROJECT, CHANGE_PROJECT } from '@/store/actions';
   import { defineComponent } from 'vue';
@@ -34,7 +33,7 @@
     },
     mounted() {
       if (this.id) {
-        const projetoSelecionado = this.store.state.projetos.find(
+        const projetoSelecionado = this.store.state.projeto.projetos.find(
           (projeto) => projeto.id === Number(this.id)
         );
         this.nomeDoProjeto = projetoSelecionado?.nome || '';
@@ -53,19 +52,19 @@
               id: this.id,
               nome: this.nomeDoProjeto,
             })
-            .then((project) => this._handlerSuccess(project))
+            .then(() => this._handlerSuccess())
             .catch(() => this._handlerFail());
         } else {
           this.store
             .dispatch(ADD_PROJECT, this.nomeDoProjeto)
-            .then((project) => this._handlerSuccess(project))
+            .then(() => this._handlerSuccess())
             .catch(() => this._handlerFail());
         }
       },
-      _handlerSuccess(project: IProjeto): void {
+      _handlerSuccess(): void {
         this.notificar(
           'Sucesso',
-          `Projeto ${project.nome} adicionado com sucesso`,
+          `Projeto adicionado com sucesso`,
           TipoDeNotificacao.SUCESSO
         );
         this.$router.push('/projetos');

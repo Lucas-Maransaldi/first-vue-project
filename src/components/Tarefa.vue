@@ -1,6 +1,6 @@
 <template>
   <Box>
-    <div class="columns">
+    <div class="columns clicavel" @click="_handlerClick">
       <div class="column is-4">
         {{ tarefa.descricao || 'Tarefa sem descrição' }}
       </div>
@@ -28,6 +28,17 @@
         required: true,
       },
     },
+    emits: ['tarefaClicada'],
+    methods: {
+      _handlerClick(): void {
+        this.$emit('tarefaClicada', this.tarefa);
+      },
+    },
     components: { CronometerDisplay, Box },
   });
 </script>
+<style>
+  .clicavel {
+    cursor: pointer;
+  }
+</style>
