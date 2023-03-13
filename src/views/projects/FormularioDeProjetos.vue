@@ -22,7 +22,8 @@
   import { TipoDeNotificacao } from '@/interfaces/INotificacao';
   import { useStore } from '@/store';
   import { ADD_PROJECT, CHANGE_PROJECT } from '@/store/actions';
-  import { defineComponent } from 'vue';
+  import { defineComponent, ref } from 'vue';
+  import { useRouter } from 'vue-router';
 
   export default defineComponent({
     name: 'FormularioDeProjetos',
@@ -31,59 +32,57 @@
         type: String,
       },
     },
-    mounted() {
-      if (this.id) {
-        const projetoSelecionado = this.store.state.projeto.projetos.find(
-          (projeto) => projeto.id === Number(this.id)
+    methods: {},
+    setup(props) {
+      const router = useRouter();
+      const store = useStore();
+      const { notificar } = useNotificador();
+      const nomeDoProjeto = ref('');
+      if (props.id) {
+        const projetoSelecionado = store.state.projeto.projetos.find(
+          (projeto) => projeto.id === Number(props.id)
         );
-        this.nomeDoProjeto = projetoSelecionado?.nome || '';
+        nomeDoProjeto.value = projetoSelecionado?.nome || '';
       }
-    },
-    data() {
-      return {
-        nomeDoProjeto: '',
-      };
-    },
-    methods: {
-      salvar(): void {
-        if (this.id) {
-          this.store
-            .dispatch(CHANGE_PROJECT, {
-              id: this.id,
-              nome: this.nomeDoProjeto,
-            })
-            .then(() => this._handlerSuccess())
-            .catch(() => this._handlerFail());
-        } else {
-          this.store
-            .dispatch(ADD_PROJECT, this.nomeDoProjeto)
-            .then(() => this._handlerSuccess())
-            .catch(() => this._handlerFail());
-        }
-      },
-      _handlerSuccess(): void {
-        this.notificar(
+
+      const _handlerSuccess = (): void => {
+        notificar(
           'Sucesso',
           `Projeto adicionado com sucesso`,
           TipoDeNotificacao.SUCESSO
         );
-        this.$router.push('/projetos');
-        this.nomeDoProjeto = '';
-      },
-      _handlerFail(): void {
-        this.notificar(
+        router.push('/projetos');
+        nomeDoProjeto.value = '';
+      };
+
+      const _handlerFail = (): void => {
+        notificar(
           'Erro',
           'Falha em adição de projetos',
           TipoDeNotificacao.FALHA
         );
-      },
-    },
-    setup() {
-      const store = useStore();
-      const { notificar } = useNotificador();
+      };
+
+      const salvar = (): void => {
+        if (props.id) {
+          store
+            .dispatch(CHANGE_PROJECT, {
+              id: props.id,
+              nome: nomeDoProjeto.value,
+            })
+            .then(() => _handlerSuccess())
+            .catch(() => _handlerFail());
+        } else {
+          store
+            .dispatch(ADD_PROJECT, nomeDoProjeto)
+            .then(() => _handlerSuccess())
+            .catch(() => _handlerFail());
+        }
+      };
+
       return {
-        notificar,
-        store,
+        nomeDoProjeto,
+        salvar,
       };
     },
   });

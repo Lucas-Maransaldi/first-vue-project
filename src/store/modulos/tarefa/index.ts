@@ -31,8 +31,11 @@ export const tarefa: Module<TarefaState, State> = {
                 .then((tarefaAdicionada) => commit(ALTERA_TAREFA, tarefaAdicionada.data));
         },
         [ADD_TAREFA]({commit}, tarefa: ITarefa) {
-            httpClient.post<ITarefa>('/tarefas', { tarefa })
-                .then((tarefaAdicionada) => commit(ADICIONA_TAREFA, tarefaAdicionada.data));
+            httpClient.post<ITarefa>('/tarefas', tarefa )
+                .then((tarefaAdicionada) => {
+                    console.log(tarefaAdicionada);
+                    commit(ADICIONA_TAREFA, tarefaAdicionada.data);
+                });
         },
         [GET_TAREFAS]({commit}) {
             httpClient.get<ITarefa[]>('tarefas')
