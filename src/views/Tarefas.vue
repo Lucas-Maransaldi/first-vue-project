@@ -21,40 +21,34 @@
       :tarefa="tarefa"
       @tarefa-clicada="_selecionaTarefa"
     />
-    <div
-      class="modal"
-      :class="{ 'is-active': tarefaSelecionada }"
-      v-if="tarefaSelecionada"
-    >
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Editando Tarefa</p>
-          <button
-            @click="_fecharModal"
-            class="delete"
-            aria-label="close"
-          ></button>
-        </header>
-        <section class="modal-card-body">
-          <div class="field">
-            <label for="descricaoTarefa" class="label"> Descrição </label>
-            <input
-              type="text"
-              class="input"
-              v-model="tarefaSelecionada.descricao"
-              id="descricaoTarefa"
-            />
-          </div>
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-success" @click="_alterarTarefa">
-            Salvar alterações
-          </button>
-          <button class="button" @click="_fecharModal">Cancelar</button>
-        </footer>
-      </div>
-    </div>
+    <Modal :mostrar="tarefaSelecionada !== null">
+      <template v-slot:header>
+        <p class="modal-card-title">Editando Tarefa</p>
+        <button
+          @click="_fecharModal"
+          class="delete"
+          aria-label="close"
+        ></button>
+      </template>
+      <template v-slot:body>
+        <div class="field">
+          <label for="descricaoTarefa" class="label"> Descrição </label>
+          <input
+            type="text"
+            class="input"
+            v-if="tarefaSelecionada"
+            v-model="tarefaSelecionada.descricao"
+            id="descricaoTarefa"
+          />
+        </div>
+      </template>
+      <template v-slot:footer>
+        <button class="button is-success" @click="_alterarTarefa">
+          Salvar alterações
+        </button>
+        <button class="button" @click="_fecharModal">Cancelar</button>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -70,6 +64,7 @@
   import { computed, defineComponent, ref, watchEffect } from 'vue';
   import Box from '../components/Box.vue';
   import FormularioPrincipal from '../components/FormularioPrincipal.vue';
+  import Modal from '../components/Modal.vue';
   import Tarefa from '../components/Tarefa.vue';
 
   export default defineComponent({
@@ -78,6 +73,7 @@
       FormularioPrincipal,
       Tarefa,
       Box,
+      Modal,
     },
     data() {
       return {
