@@ -1,13 +1,26 @@
 <template>
   <FormularioPrincipal @tarefa-finalizada="salvarTarefa" />
   <div class="lista">
+    <Box v-if="isTarefasEmpty()"> Você não esta muito produtivo hoje :/ </Box>
+    <div class="field">
+      <p class="control has-icons-left has-icons-right">
+        <input
+          class="input"
+          type="text"
+          placeholder="Digite para filtrar"
+          v-model="filtro"
+        />
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+      </p>
+    </div>
     <Tarefa
       v-for="(tarefa, index) in tarefas"
       :key="index"
       :tarefa="tarefa"
       @tarefa-clicada="_selecionaTarefa"
     />
-    <Box v-if="isTarefasEmpty()"> Você não esta muito produtivo hoje :/ </Box>
     <div
       class="modal"
       :class="{ 'is-active': tarefaSelecionada }"
@@ -54,7 +67,7 @@
     GET_PROJECT,
     GET_TAREFAS,
   } from '@/store/actions';
-  import { computed, defineComponent } from 'vue';
+  import { computed, defineComponent, ref, watchEffect } from 'vue';
   import Box from '../components/Box.vue';
   import FormularioPrincipal from '../components/FormularioPrincipal.vue';
   import Tarefa from '../components/Tarefa.vue';
@@ -94,9 +107,16 @@
       const store = useStore();
       store.dispatch(GET_TAREFAS);
       store.dispatch(GET_PROJECT);
+      const filtro = ref('');
+      const tarefas = computed(() => store.state.tarefa.tarefas);
+
+      watchEffect(() => {
+        store.dispatch(GET_TAREFAS, filtro.value);
+      });
       return {
-        tarefas: computed(() => store.state.tarefa.tarefas),
+        tarefas,
         store,
+        filtro,
       };
     },
   });

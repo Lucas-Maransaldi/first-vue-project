@@ -37,8 +37,8 @@ export const tarefa: Module<TarefaState, State> = {
                     commit(ADICIONA_TAREFA, tarefaAdicionada.data);
                 });
         },
-        [GET_TAREFAS]({commit}) {
-            httpClient.get<ITarefa[]>('tarefas')
+        [GET_TAREFAS]({commit}, filtro: string) {
+            httpClient.get<ITarefa[]>('tarefas', {params: (filtro ? {descricao: filtro}: {})})
                 .then((tarefas: AxiosResponse<ITarefa[]>) => commit(SET_TAREFAS, tarefas.data))
                 .catch(() => useNotificador().notificar('Erro', 'Falha em obter tarefas', TipoDeNotificacao.FALHA))
         }
